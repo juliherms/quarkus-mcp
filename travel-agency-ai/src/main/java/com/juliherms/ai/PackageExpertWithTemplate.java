@@ -1,8 +1,10 @@
 package com.juliherms.ai;
 
+import com.juliherms.security.InjectionGuard;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.guardrail.InputGuardrails;
 import io.quarkiverse.langchain4j.RegisterAiService;
 import io.quarkiverse.langchain4j.mcp.runtime.McpToolBox;
 
@@ -25,6 +27,7 @@ public interface PackageExpertWithTemplate {
         você deve responder educadamente:
         'Desculpe, mas não tenho informações sobre isso. Posso ajudar com mais alguma dúvida sobre nossos pacotes?'
         """)
+    @InputGuardrails(InjectionGuard.class) // Adiciona uma camada de segurança para validar a mensagem do usuário
     @McpToolBox("booking-server")
     // template de um prompt
     @UserMessage("Do what user is asking {message}. The user used for authentication is {username}.")

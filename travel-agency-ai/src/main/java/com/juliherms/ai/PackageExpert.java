@@ -1,8 +1,10 @@
 package com.juliherms.ai;
 
+import com.juliherms.security.InjectionGuard;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.guardrail.InputGuardrails;
 import io.quarkiverse.langchain4j.RegisterAiService;
 import io.quarkiverse.langchain4j.mcp.runtime.McpToolBox;
 
@@ -25,6 +27,7 @@ public interface PackageExpert {
         você deve responder educadamente:
         'Desculpe, mas não tenho informações sobre isso. Posso ajudar com mais alguma dúvida sobre nossos pacotes?'
         """)
+    @InputGuardrails(InjectionGuard.class) // Adiciona uma camada de segurança para validar a mensagem do usuário
     @McpToolBox("booking-server") // Indica que este serviço pode utilizar a ferramenta "booking-server" para interagir
         // com o sistema de reservas.
     String chat(@MemoryId String memoryId, @UserMessage String userMessage);
